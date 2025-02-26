@@ -25,7 +25,7 @@ jobs:
           PORT: ${{secrets.PORT}}
         run: |
           ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
-          ssh -i ~/.ssh/id_rsa $USERNAME@$HOST "
+          ssh $USER@$HOST "
             if [ ! -d $APP_DIR ]; then
               mkdir -p $APP_DIR
               git clone https://github.com/Shahriyor2001/a.git $APP_DIR
