@@ -14,7 +14,9 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
-          chmod 600  ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          eval "$(ssh-agent -s)"
+          ssh-add ~/.ssh/id_rsa
         shell: bash
 
       - name: Deploy to server
@@ -24,8 +26,7 @@ jobs:
           APP_DIR: /ci_cd
           PORT: ${{secrets.PORT}}
         run: |
-          ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
-          ssh $USER@$HOST "
+          ssh -o StrictHostKeyChecking=no $USER@$HOST "
             if [ ! -d $APP_DIR ]; then
               mkdir -p $APP_DIR
               git clone https://github.com/Shahriyor2001/a.git $APP_DIR
@@ -39,6 +40,11 @@ jobs:
             npm install
             npm run build
 
+            if ! command -v pm2 &> /dev/null
+            then
+              npm install -g pm2
+            fi
+
             if pm2 list | grep -q 'ci_cd_app'; then
               pm2 restart ci_cd_app
             else
@@ -48,5 +54,3 @@ jobs:
             pm2 save
           "
         shell: bash
-
-        
