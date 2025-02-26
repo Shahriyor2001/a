@@ -11,7 +11,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: "http://localhost:3001", // Update with your server URL
+        url: "http://185.217.131.195:3001", // Update with your server URL
       },
     ],
   },
