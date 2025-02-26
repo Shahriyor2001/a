@@ -31,7 +31,7 @@ jobs:
               git clone https://github.com/Shahriyor2001/a.git $APP_DIR
             else
               cd $APP_DIR
-              git pull origin master
+              git pull origin main
             fi
 
             cd $APP_DIR
